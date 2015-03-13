@@ -78,11 +78,13 @@ class UploadedFile extends \SplFileInfo
             throw new \InvalidArgumentException('File does not exist in datasource.');
         }
 
-        if (static::$dataSource[$name]['error'] !== UPLOAD_ERR_OK) {
-            throw new \RuntimeException('File upload error', static::$dataSource[$name]['error']);
+        $file = static::$dataSource[$name];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            throw new \RuntimeException('File upload error', $file['error']);
         }
 
-        return new static(static::$dataSource[$name]['tmp_name'], static::$dataSource[$name]['name']);
+        return new static($file['tmp_name'], $file['name']);
     }
 
     /**
